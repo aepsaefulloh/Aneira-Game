@@ -1,0 +1,319 @@
+{
+  "communities": {
+    "0": [
+      "animal_food_animal_food_assets",
+      "animal_food_animal_food_assets_animal_food_assets",
+      "components_basebutton",
+      "components_basebutton_basebuttoncontrol",
+      "components_basebutton_basebuttonoptions",
+      "components_basebutton_createbasebutton",
+      "constants_scene_keys",
+      "constants_scene_keys_scene_keys",
+      "constants_scene_keys_scenekey",
+      "data_age_groups_age_groups",
+      "helpers_scene_layout",
+      "helpers_scene_layout_createscenebackdrop",
+      "helpers_scene_layout_createscenetitle",
+      "scenes_ageselectscene",
+      "scenes_ageselectscene_ageselectscene",
+      "scenes_ageselectscene_ageselectscene_constructor",
+      "scenes_ageselectscene_ageselectscene_create",
+      "scenes_bootscene",
+      "scenes_gamelistscene",
+      "scenes_gamelistscene_gamelistscene",
+      "scenes_gamelistscene_gamelistscene_constructor",
+      "scenes_gamelistscene_gamelistscene_create",
+      "scenes_gamelistscene_gamelistscenedata",
+      "scenes_homescene",
+      "scenes_homescene_homescene",
+      "scenes_homescene_homescene_constructor",
+      "scenes_homescene_homescene_create",
+      "scenes_preloadscene",
+      "scenes_preloadscene_preloadscene",
+      "scenes_preloadscene_preloadscene_constructor",
+      "scenes_preloadscene_preloadscene_create",
+      "scenes_preloadscene_preloadscene_preload",
+      "scenes_resultscene",
+      "scenes_resultscene_resultscene",
+      "scenes_resultscene_resultscene_constructor",
+      "scenes_resultscene_resultscene_create",
+      "scenes_resultscene_resultscenedata",
+      "src_game_config",
+      "utils_scale",
+      "utils_scale_getviewportcenter"
+    ],
+    "1": [
+      "animal_food_animalfoodscene_animalfoodscene",
+      "animal_food_animalfoodscene_animalfoodscene_clearlevelobjects",
+      "animal_food_animalfoodscene_animalfoodscene_constructor",
+      "animal_food_animalfoodscene_animalfoodscene_create",
+      "animal_food_animalfoodscene_animalfoodscene_createstaticui",
+      "animal_food_animalfoodscene_animalfoodscene_finishgame",
+      "animal_food_animalfoodscene_animalfoodscene_getwrongfeedbacktext",
+      "animal_food_animalfoodscene_animalfoodscene_gotonextlevel",
+      "animal_food_animalfoodscene_animalfoodscene_handlecorrectanswer",
+      "animal_food_animalfoodscene_animalfoodscene_handlefooddrop",
+      "animal_food_animalfoodscene_animalfoodscene_handlewronganswer",
+      "animal_food_animalfoodscene_animalfoodscene_init",
+      "animal_food_animalfoodscene_animalfoodscene_isinsidedropzone",
+      "animal_food_animalfoodscene_animalfoodscene_playsuccessreward",
+      "animal_food_animalfoodscene_animalfoodscene_registerdraghandlers",
+      "animal_food_animalfoodscene_animalfoodscene_renderlevel",
+      "animal_food_animalfoodscene_animalfoodscene_renderplayhint",
+      "components_foodcard_foodcard",
+      "components_foodcard_foodcard_constructor",
+      "components_foodcard_foodcard_playcorrectanimation",
+      "components_foodcard_foodcard_playwronganimation",
+      "components_foodcard_foodcard_resetposition",
+      "components_foodcard_foodcard_setdraggingstate"
+    ],
+    "2": [
+      "animal_food_animal_food_config",
+      "animal_food_animal_food_config_animal_food_config",
+      "animal_food_animal_food_levels",
+      "animal_food_animal_food_levels_animal_food_levels",
+      "animal_food_animal_food_types",
+      "animal_food_animal_food_types_animalfooditem",
+      "animal_food_animal_food_types_animalfooditemtype",
+      "animal_food_animal_food_types_animalfoodlevel",
+      "animal_food_animal_food_types_animalfoodscenedata",
+      "animal_food_animalfoodscene",
+      "components_animaltarget",
+      "components_animaltarget_animaltarget",
+      "components_animaltarget_animaltarget_constructor",
+      "components_animaltarget_animaltarget_playhappyanimation",
+      "components_foodcard",
+      "utils_checkanswer",
+      "utils_checkanswer_checkanimalfoodanswer",
+      "utils_shufflefoodoptions",
+      "utils_shufflefoodoptions_shufflefoodoptions"
+    ],
+    "3": [
+      "components_agecard",
+      "components_agecard_agecardoptions",
+      "components_agecard_createagecard",
+      "components_gamecard",
+      "components_gamecard_creategamecard",
+      "components_gamecard_gamecardoptions",
+      "data_age_groups",
+      "data_game_catalog",
+      "data_game_catalog_game_catalog",
+      "types_age_group_type",
+      "types_age_group_type_agegroup",
+      "types_age_group_type_agegroupid",
+      "types_game_module_type",
+      "types_game_module_type_gamemodule",
+      "types_game_module_type_gamemoduleid"
+    ],
+    "4": [
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowsyntheticdefaultimports",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_compileroptions_types",
+      "tsconfig_compileroptions_usedefineforclassfields",
+      "tsconfig_include"
+    ],
+    "5": [
+      "managers_audiomanager",
+      "managers_audiomanager_audiomanager",
+      "managers_audiomanager_audiomanager_getaudiocontext",
+      "managers_audiomanager_audiomanager_getfallbacktone",
+      "managers_audiomanager_audiomanager_getvolumeforkey",
+      "managers_audiomanager_audiomanager_initialize",
+      "managers_audiomanager_audiomanager_ismuted",
+      "managers_audiomanager_audiomanager_play",
+      "managers_audiomanager_audiomanager_playfallbacktone",
+      "managers_audiomanager_audiomanager_setmuted",
+      "managers_audiomanager_audiomanager_togglemuted",
+      "utils_storage",
+      "utils_storage_getstorageboolean",
+      "utils_storage_setstorageboolean"
+    ],
+    "6": [
+      "package",
+      "package_dependencies",
+      "package_dependencies_phaser",
+      "package_devdependencies",
+      "package_devdependencies_typescript",
+      "package_devdependencies_vite",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_preview",
+      "package_type",
+      "package_version"
+    ],
+    "7": [
+      "components_feedbackbubble",
+      "components_feedbackbubble_feedbackbubble",
+      "components_feedbackbubble_feedbackbubble_constructor",
+      "components_feedbackbubble_feedbackbubble_getpalette",
+      "components_feedbackbubble_feedbackbubble_hide",
+      "components_feedbackbubble_feedbackbubble_show",
+      "components_feedbackbubble_feedbacktone"
+    ],
+    "8": [
+      "managers_progress_manager",
+      "managers_progress_manager_progressmanager",
+      "managers_progress_manager_progressmanager_getlastvisitedscene",
+      "managers_progress_manager_progressmanager_setlastvisitedscene"
+    ],
+    "9": [
+      "scenes_bootscene_bootscene",
+      "scenes_bootscene_bootscene_constructor",
+      "scenes_bootscene_bootscene_create"
+    ],
+    "10": [
+      "src_game_config_gameconfig",
+      "src_main",
+      "src_main_approot"
+    ],
+    "11": [
+      "types_game_types",
+      "types_game_types_agegroup",
+      "types_game_types_gamecatalogentry"
+    ],
+    "12": [
+      "vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.12307692307692308,
+    "1": 0.1422924901185771,
+    "2": 0.23391812865497075,
+    "3": 0.19047619047619047,
+    "4": 0.13333333333333333,
+    "5": 0.2857142857142857,
+    "6": 0.14285714285714285,
+    "7": 0.3333333333333333,
+    "8": 0.5,
+    "9": 0.6666666666666666,
+    "10": 0.6666666666666666,
+    "11": 0.6666666666666666,
+    "12": 1.0
+  },
+  "gods": [
+    {
+      "id": "animal_food_animalfoodscene_animalfoodscene",
+      "label": "AnimalFoodScene",
+      "degree": 24
+    },
+    {
+      "id": "managers_audiomanager_audiomanager",
+      "label": "AudioManager",
+      "degree": 15
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 13
+    },
+    {
+      "id": "components_basebutton_createbasebutton",
+      "label": "createBaseButton()",
+      "degree": 12
+    },
+    {
+      "id": "helpers_scene_layout_createscenetitle",
+      "label": "createSceneTitle()",
+      "degree": 12
+    },
+    {
+      "id": "components_foodcard_foodcard",
+      "label": "FoodCard",
+      "degree": 11
+    },
+    {
+      "id": "helpers_scene_layout_createscenebackdrop",
+      "label": "createSceneBackdrop()",
+      "degree": 11
+    },
+    {
+      "id": "constants_scene_keys_scene_keys",
+      "label": "SCENE_KEYS",
+      "degree": 10
+    },
+    {
+      "id": "types_age_group_type_agegroupid",
+      "label": "AgeGroupId",
+      "degree": 8
+    },
+    {
+      "id": "components_feedbackbubble_feedbackbubble",
+      "label": "FeedbackBubble",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "AnimalFoodScene",
+      "target": "AgeGroupId",
+      "source_files": [
+        "src/games/age-3/animal-food/AnimalFoodScene.ts",
+        "src/core/types/age-group.type.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "AnimalFoodScene",
+      "target": "AnimalFoodLevel",
+      "source_files": [
+        "src/games/age-3/animal-food/AnimalFoodScene.ts",
+        "src/games/age-3/animal-food/animal-food.types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "AnimalFoodScene",
+      "target": "AnimalTarget",
+      "source_files": [
+        "src/games/age-3/animal-food/AnimalFoodScene.ts",
+        "src/games/age-3/animal-food/components/AnimalTarget.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "AnimalFoodScene",
+      "target": "createBaseButton()",
+      "source_files": [
+        "src/games/age-3/animal-food/AnimalFoodScene.ts",
+        "src/ui/components/BaseButton.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "AnimalFoodScene",
+      "target": "FeedbackBubble",
+      "source_files": [
+        "src/games/age-3/animal-food/AnimalFoodScene.ts",
+        "src/games/age-3/animal-food/components/FeedbackBubble.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}

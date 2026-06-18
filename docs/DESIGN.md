@@ -170,12 +170,54 @@ Rules:
 ## Settings Row Layout / Layout Baris Pengaturan
 
 ```txt
-[ IDN | EN ]            [ 🔊 On ]
+[ IDN | EN ]            [ Sound On ]
 ```
 
 On small screens the controls may stack neatly:
 
 ```txt
 [ IDN | EN ]
-[ 🔊 On ]
+[ Sound On ]
 ```
+
+## Responsive Layout Rules / Aturan Layout Responsif
+
+### Indonesia
+
+Game menggunakan `Phaser.Scale.FIT` dengan ukuran kanvas tetap `390×844`. CSS menskalakan secara proporsional. Pada desktop, container `#app` dibatasi `maxWidth: 480px` dan dicentang secara horizontal agar kolom potrait tetap terpusat.
+
+### English
+
+The game uses `Phaser.Scale.FIT` with a fixed canvas size of `390×844`. CSS scales proportionally. On desktop the `#app` container is capped at `maxWidth: 480px` and centered horizontally so the portrait column stays intentional.
+
+### Viewport Targets / Target Viewport
+
+| Name | Width | Height | Notes |
+|------|-------|--------|-------|
+| mobile-small | 360 | 640 | Smallest supported phone |
+| mobile-standard | 390 | 844 | Primary reference (iPhone 14) |
+| mobile-large | 430 | 932 | Plus-size phones |
+| tablet-portrait | 768 | 1024 | iPad portrait |
+| tablet-landscape | 1024 | 768 | iPad landscape |
+| desktop | 1366 | 768 | Common laptop |
+
+### Layout Behavior / Perilaku Layout
+
+- All scene Y positions are derived from `scale.height` fractions — never hardcoded pixel constants.
+- Footer buttons use `y: this.scale.height - offset` so they stay near the bottom on every screen height.
+- The `computeAnimalFoodLayout(width, height)` helper in `src/core/layout/layout.ts` centralizes all AnimalFood positions.
+- At the reference resolution `390×844` all computed values are identical to the original hardcoded constants.
+
+### Safe Margins / Margin Aman
+
+- Safe horizontal margin: `SAFE_X = 24` (exported from `src/core/layout/layout.ts`).
+- Safe bottom margin: `SAFE_Y_BTM = 32` — keeps footer buttons clear of home bar / gesture bar on mobile.
+
+### Touch Target Rules / Aturan Touch Target
+
+- Minimum button height: 54px.
+- No interactive elements taller than `foodRowY + 80` in the AnimalFood scene (keeps drag area safe from settings row).
+
+### Sound Toggle Text / Teks Sound Toggle
+
+The sound toggle uses plain text `"Sound On"` / `"Sound Off"` — no emoji icons per the project UI/UX policy (`no-emoji-icons` rule).

@@ -31,3 +31,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 bun-debug.log*
+
+graphify-out/
+
+# Playwright evidence (screenshots, artifacts)
+evidence/

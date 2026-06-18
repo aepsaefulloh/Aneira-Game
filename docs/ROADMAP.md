@@ -58,6 +58,16 @@ Merapikan dokumentasi utama dan menyelaraskan UI: pemilihan bahasa, sound toggle
 
 Clean up the main documentation and align the UI: language selection, sound toggle, and per-age-segment themes. No new game and no Android work yet.
 
+## 1.4.2 Responsive Browser QA and Layout Stabilization
+
+### Indonesia
+
+Stabilkan layout di berbagai ukuran viewport. Perkenalkan layout helper untuk posisi berbasis fraksi, perbaiki footer button agar mengikuti tinggi canvas, dan buat Playwright test untuk screenshot QA di 6 viewport.
+
+### English
+
+Stabilize layout across viewport sizes. Introduce a layout helper for fraction-based positions, fix footer buttons to follow canvas height, and add a Playwright test for screenshot QA across 6 viewports.
+
 ## 1.5 Capacitor Android Build
 
 Wrap the web app for Android packaging.

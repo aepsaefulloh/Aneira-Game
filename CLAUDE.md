@@ -482,6 +482,7 @@ Initial roadmap:
 1.3 — Kids-Friendly UI Feedback
 1.4 — Audio and Animation Polish
 1.4.1 — Documentation Cleanup + UI Theme Alignment
+1.4.2 — Responsive Browser QA + Layout Stabilization
 1.5 — Capacitor Android Build
 2.0 — Second Age 3 Mini Game
 ```
@@ -521,3 +522,55 @@ Prioritize:
 6. Android packaging later
 
 Do not over-engineer the foundation before the first playable mini-game works.
+
+---
+
+## Responsive Layout Rules
+
+Before doing any Android/Capacitor work, responsive web layout must be stable.
+
+Scene layout rules:
+
+- All Y positions must be derived from `scale.height` fractions — never hardcoded pixel constants.
+- Footer buttons use `y: this.scale.height - offset`.
+- Use `computeAnimalFoodLayout(width, height)` from `src/core/layout/layout.ts` for AnimalFood scene positions.
+- Run `bun run test:responsive` (Playwright) to verify layout at 6 viewport sizes before shipping a visual change.
+
+---
+
+## UI Consistency Rules
+
+- Do not use emoji as structural icons. Use SVG or text labels instead (`no-emoji-icons` rule).
+- Sound toggle text: `"Sound On"` / `"Sound Off"` — not emoji.
+- Language selector pill: `[ IDN | EN ]` — plain text, no emoji.
+
+---
+
+## Theme System Direction
+
+Themes are defined in `src/core/theme/age-themes.ts`.
+
+- `BRAND_THEME` = Age-3 theme, used before an age segment is selected.
+- `getAgeTheme(ageGroupId)` returns the theme for a given age segment.
+- Shell scenes before age selection use `BRAND_THEME`.
+- Shell scenes after age selection use `getAgeTheme(ageGroupId)`.
+- AnimalFoodScene always uses the Age-3 theme.
+- `toCssColor(hexNumber)` converts Phaser hex color numbers to CSS color strings.
+
+---
+
+## Language Selection Rules
+
+- Language state is managed by `LanguageManager` (static class, `localStorage` persistence).
+- `LanguageManager.t(localizedText)` returns the string in the current language.
+- `LocalizedText` uses `{ en: string; idn: string }` — use `idn` not `id` (avoids identifier conflicts).
+- The language selector is a pill `[ IDN | EN ]` rendered by `createLanguageSelector()`.
+- All user-facing text must come from `UI_STRINGS` (bilingual) — not hardcoded strings inside scenes.
+
+---
+
+## Sound Control Rules
+
+- Audio state is managed by `AudioManager` (static class, `localStorage` persistence).
+- Sound toggle uses plain text pill rendered by `createSoundToggle()`.
+- Missing audio assets must never crash the game.

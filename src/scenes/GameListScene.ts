@@ -59,7 +59,7 @@ export class GameListScene extends Phaser.Scene {
     createBaseButton({
       scene: this,
       x: this.scale.width / 2,
-      y: 790,
+      y: this.scale.height - 54,
       width: 180,
       height: 54,
       label: LanguageManager.t(UI_STRINGS.common.back),

@@ -8,8 +8,6 @@ export type LanguageSelectorOptions = {
   x: number;
   y: number;
   theme?: AgeTheme;
-  // Called after the language has been stored. Scenes typically restart so all
-  // user-facing text refreshes in the newly selected language.
   onChange?: (language: Language) => void;
 };
 
@@ -18,7 +16,6 @@ const SEGMENTS: { language: Language; label: string }[] = [
   { language: "en", label: "EN" },
 ];
 
-// Reusable pill: [ IDN | EN ]. Large enough for touch, never a tiny dropdown.
 export const createLanguageSelector = ({
   scene,
   x,
@@ -26,57 +23,84 @@ export const createLanguageSelector = ({
   theme = BRAND_THEME,
   onChange,
 }: LanguageSelectorOptions): Phaser.GameObjects.Container => {
-  const segmentWidth = 56;
-  const height = 44;
-  const width = segmentWidth * SEGMENTS.length;
+  const segW = 54;
+  const totalW = segW * SEGMENTS.length;
+  const h = 44;
+  const r = h / 2;
 
   const container = scene.add.container(x, y);
-  container.setSize(width, height);
+  container.setSize(totalW, h);
 
-  const border = scene.add
-    .rectangle(0, 0, width, height, theme.surfaceColor)
-    .setStrokeStyle(3, theme.primaryColor);
-  container.add(border);
+  // Single graphics object redrawn on state change
+  const pillGfx = scene.add.graphics();
+  container.add(pillGfx);
+
+  // Text labels (added above graphics so they appear on top)
+  const labels = SEGMENTS.map((seg, i) => {
+    const segX = -totalW / 2 + segW / 2 + i * segW;
+    const lbl = scene.add
+      .text(segX, 0, seg.label, {
+        fontFamily: "Trebuchet MS, Verdana, sans-serif",
+        fontSize: "17px",
+        fontStyle: "bold",
+        align: "center",
+        color: toCssColor(theme.mutedTextColor),
+      })
+      .setOrigin(0.5);
+    container.add(lbl);
+    container.setData(`label-${i}`, lbl);
+    return lbl;
+  });
 
   const refresh = (): void => {
     const active = LanguageManager.getLanguage();
+    pillGfx.clear();
 
-    SEGMENTS.forEach((segment, index) => {
-      const isActive = segment.language === active;
-      const fill = container.getData(`fill-${index}`) as Phaser.GameObjects.Rectangle;
-      const label = container.getData(`label-${index}`) as Phaser.GameObjects.Text;
-      fill.setFillStyle(isActive ? theme.primaryColor : theme.surfaceColor);
-      label.setColor(isActive ? "#ffffff" : toCssColor(theme.mutedTextColor));
-      label.setFontStyle(isActive ? "bold" : "normal");
+    // Pill background
+    pillGfx.fillStyle(theme.surfaceColor, 0.95);
+    pillGfx.fillRoundedRect(-totalW / 2, -h / 2, totalW, h, r);
+
+    // Active segment highlight
+    const activeIdx = SEGMENTS.findIndex((s) => s.language === active);
+    if (activeIdx === 0) {
+      pillGfx.fillStyle(theme.primaryColor, 1);
+      pillGfx.fillRoundedRect(-totalW / 2, -h / 2, segW, h, { tl: r, bl: r, tr: 6, br: 6 });
+    } else if (activeIdx === 1) {
+      pillGfx.fillStyle(theme.primaryColor, 1);
+      pillGfx.fillRoundedRect(-totalW / 2 + segW, -h / 2, segW, h, { tl: 6, bl: 6, tr: r, br: r });
+    }
+
+    // Center divider line
+    pillGfx.lineStyle(1.5, theme.primaryColor, 0.3);
+    pillGfx.beginPath();
+    pillGfx.moveTo(0, -h / 2 + 8);
+    pillGfx.lineTo(0, h / 2 - 8);
+    pillGfx.strokePath();
+
+    // Outer stroke
+    pillGfx.lineStyle(2, theme.primaryColor, 0.85);
+    pillGfx.strokeRoundedRect(-totalW / 2, -h / 2, totalW, h, r);
+
+    SEGMENTS.forEach((seg, i) => {
+      const isActive = seg.language === active;
+      labels[i].setColor(isActive ? "#ffffff" : toCssColor(theme.mutedTextColor));
+      labels[i].setFontStyle(isActive ? "bold" : "normal");
     });
   };
 
-  SEGMENTS.forEach((segment, index) => {
-    const segmentX = -width / 2 + segmentWidth / 2 + index * segmentWidth;
-    const fill = scene.add.rectangle(segmentX, 0, segmentWidth - 4, height - 6, theme.surfaceColor);
-    const label = scene.add
-      .text(segmentX, 0, segment.label, {
-        color: toCssColor(theme.mutedTextColor),
-        fontFamily: "Trebuchet MS, Verdana, sans-serif",
-        fontSize: "18px",
-        align: "center",
-      })
-      .setOrigin(0.5);
+  // Transparent hit rectangles for each segment (added last so they sit on top)
+  SEGMENTS.forEach((seg, i) => {
+    const segX = -totalW / 2 + segW / 2 + i * segW;
+    const hit = scene.add
+      .rectangle(segX, 0, segW, h, 0x000000, 0)
+      .setInteractive({ useHandCursor: true });
+    container.add(hit);
 
-    container.add(fill);
-    container.add(label);
-    container.setData(`fill-${index}`, fill);
-    container.setData(`label-${index}`, label);
-
-    fill.setInteractive({ useHandCursor: true });
-    fill.on("pointerup", () => {
-      if (LanguageManager.getLanguage() === segment.language) {
-        return;
-      }
-
-      LanguageManager.setLanguage(segment.language);
+    hit.on("pointerup", () => {
+      if (LanguageManager.getLanguage() === seg.language) return;
+      LanguageManager.setLanguage(seg.language);
       refresh();
-      onChange?.(segment.language);
+      onChange?.(seg.language);
     });
   });
 

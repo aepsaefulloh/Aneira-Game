@@ -4,6 +4,7 @@ import { LanguageManager } from "../../../core/managers/LanguageManager";
 import { SCENE_KEYS } from "../../../core/constants/scene.keys";
 import type { AgeGroupId } from "../../../core/types/age-group.type";
 import { getAgeTheme } from "../../../core/theme/age-themes";
+import { computeAnimalFoodLayout, type AnimalFoodLayout } from "../../../core/layout/layout";
 import { UI_STRINGS } from "../../../data/ui-strings";
 import { createBaseButton } from "../../../ui/components/BaseButton";
 import { createSoundToggle } from "../../../ui/components/SoundToggle";
@@ -23,6 +24,10 @@ export class AnimalFoodScene extends Phaser.Scene {
   private isTransitioning = false;
   private completedCount = 0;
   private wrongAttemptCount = 0;
+
+  // Layout is computed once per create() so all methods share the same values.
+  // At 390×844 (FIT base) these match the original hardcoded constants exactly.
+  private layout!: AnimalFoodLayout;
 
   private instructionText?: Phaser.GameObjects.Text;
   private progressText?: Phaser.GameObjects.Text;
@@ -45,6 +50,8 @@ export class AnimalFoodScene extends Phaser.Scene {
     this.wrongAttemptCount = 0;
     this.isTransitioning = false;
 
+    this.layout = computeAnimalFoodLayout(this.scale.width, this.scale.height);
+
     this.cameras.main.setBackgroundColor("#fef8ef");
     this.createStaticUi();
     this.registerDragHandlers();
@@ -54,16 +61,17 @@ export class AnimalFoodScene extends Phaser.Scene {
   private createStaticUi(): void {
     const { width, height } = this.scale;
     const theme = getAgeTheme(this.selectedAgeGroupId);
+    const { headerY, headerH, instructionY, progressY, feedbackBubbleY } = this.layout;
 
     this.add.rectangle(width / 2, height / 2, width, height, theme.backgroundColor).setOrigin(0.5);
     this.add.ellipse(width / 2, 180, width * 1.18, 250, 0xffefc9, 0.5);
     this.add.ellipse(width / 2, height - 40, width * 1.1, 180, 0xfde7b7, 0.38);
-    this.add.rectangle(width / 2, 52, width - 26, 82, theme.surfaceColor).setStrokeStyle(2, theme.secondaryColor);
+    this.add.rectangle(width / 2, headerY, width - 26, headerH, theme.surfaceColor).setStrokeStyle(2, theme.secondaryColor);
 
     createBaseButton({
       scene: this,
       x: 66,
-      y: 50,
+      y: headerY,
       width: 100,
       height: 46,
       label: LanguageManager.t(UI_STRINGS.common.back),
@@ -78,16 +86,16 @@ export class AnimalFoodScene extends Phaser.Scene {
       },
     });
 
-    // Compact sound toggle: a quiet setting that does not dominate the header.
+    // Compact sound toggle: quiet setting that does not dominate the header.
     createSoundToggle({
       scene: this,
       x: width - 70,
-      y: 50,
+      y: headerY,
       theme,
     });
 
     this.add
-      .text(width / 2, 48, "Animal Food", {
+      .text(width / 2, headerY - 4, "Animal Food", {
         color: "#5b4636",
         fontFamily: "Trebuchet MS, Verdana, sans-serif",
         fontSize: "30px",
@@ -96,7 +104,7 @@ export class AnimalFoodScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.instructionText = this.add
-      .text(width / 2, 120, "", {
+      .text(width / 2, instructionY, "", {
         color: "#5b4636",
         fontFamily: "Trebuchet MS, Verdana, sans-serif",
         fontSize: "28px",
@@ -107,7 +115,7 @@ export class AnimalFoodScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.progressText = this.add
-      .text(width / 2, 160, "", {
+      .text(width / 2, progressY, "", {
         color: "#7a6a5f",
         fontFamily: "Trebuchet MS, Verdana, sans-serif",
         fontSize: "17px",
@@ -116,7 +124,7 @@ export class AnimalFoodScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.feedbackBubble = new FeedbackBubble(this, width / 2, ANIMAL_FOOD_CONFIG.feedbackY);
+    this.feedbackBubble = new FeedbackBubble(this, width / 2, feedbackBubbleY);
   }
 
   private registerDragHandlers(): void {
@@ -168,14 +176,14 @@ export class AnimalFoodScene extends Phaser.Scene {
     this.progressText.setText(`Level ${this.currentLevelIndex + 1} / ${ANIMAL_FOOD_LEVELS.length}`);
     this.feedbackBubble.hide();
 
-    this.animalTarget = new AnimalTarget(this, this.scale.width / 2, ANIMAL_FOOD_CONFIG.animalTargetY, level.animal);
+    const { animalTargetY, foodRowY, cardGap } = this.layout;
+    const cardStartX = Math.round(this.scale.width / 2 - cardGap);
+
+    this.animalTarget = new AnimalTarget(this, this.scale.width / 2, animalTargetY, level.animal);
 
     const shuffledOptions = shuffleFoodOptions(level.foodOptions);
-    const startX = 72;
-    const gap = 123;
-
     this.foodCards = shuffledOptions.map((item, index) => {
-      return new FoodCard(this, startX + gap * index, ANIMAL_FOOD_CONFIG.foodRowY, item);
+      return new FoodCard(this, cardStartX + cardGap * index, foodRowY, item);
     });
 
     this.renderPlayHint();
@@ -197,7 +205,7 @@ export class AnimalFoodScene extends Phaser.Scene {
     }
 
     const distance = Phaser.Math.Distance.Between(x, y, this.animalTarget.x, this.animalTarget.y);
-    return distance <= ANIMAL_FOOD_CONFIG.dropZoneRadius;
+    return distance <= this.layout.dropZoneRadius;
   }
 
   private handleFoodDrop(selectedFoodId: string, foodCard: FoodCard): void {
@@ -271,7 +279,7 @@ export class AnimalFoodScene extends Phaser.Scene {
   }
 
   private renderPlayHint(): void {
-    const hint = this.add.text(this.scale.width / 2, 610, "Drag a food card to the animal", {
+    const hint = this.add.text(this.scale.width / 2, this.layout.foodRowY + 78, "Drag a food card to the animal", {
       color: "#8d7a67",
       fontFamily: "Trebuchet MS, Verdana, sans-serif",
       fontSize: "16px",
@@ -283,7 +291,7 @@ export class AnimalFoodScene extends Phaser.Scene {
 
   private playSuccessReward(): void {
     const centerX = this.scale.width / 2;
-    const centerY = 250;
+    const centerY = this.layout.animalTargetY - 80;
 
     for (let index = 0; index < ANIMAL_FOOD_CONFIG.rewardParticleCount; index += 1) {
       const star = this.add.star(centerX, centerY, 5, 8, 14, 0xffdf70);

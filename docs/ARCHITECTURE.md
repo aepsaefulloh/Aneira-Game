@@ -119,3 +119,24 @@ public/assets/
 ```
 
 Missing optional image or audio assets must never crash the game; use placeholder shapes and synthesized fallback tones.
+
+## Responsive Architecture / Arsitektur Responsif
+
+### Indonesia
+
+Layout dibangun di atas canvas Phaser dengan mode `Scale.FIT`. Semua posisi scene harus diturunkan dari `scale.width` / `scale.height` — bukan konstanta pixel tetap.
+
+### English
+
+Layout is built on a Phaser canvas in `Scale.FIT` mode. All scene positions must be derived from `scale.width` / `scale.height` — never hardcoded pixel constants.
+
+Rules:
+
+- `src/core/layout/layout.ts` — exports `computeAnimalFoodLayout(w, h)` and shared safe-margin constants `SAFE_X`, `SAFE_Y_BTM`.
+- Footer buttons: `y: this.scale.height - offset` pattern across all scenes.
+- `src/main.ts` — `#app` container capped at `maxWidth: 480px` with flex centering on `body` so the portrait canvas stays in a centered column on desktop/tablet.
+- Do not hardcode `y: 760` or similar constants — always derive from `scale.height`.
+
+### Playwright QA / QA Playwright
+
+Responsive screenshots are captured by `tests/responsive/responsive-layout.spec.ts` using `bun run test:responsive`. Evidence is saved to `evidence/responsive/` (gitignored). The test navigates the full flow: Home → AgeSelect → GameList → AnimalFood across the six viewport targets documented in `docs/DESIGN.md`.

@@ -26,66 +26,94 @@ export const createBaseButton = ({
   onClick,
   disabled = false,
 }: BaseButtonOptions): BaseButtonControl => {
+  const radius = Math.min(height / 2, 20);
   const baseColor = disabled ? 0xd9d4cb : 0x8fcdf2;
   const hoverColor = disabled ? baseColor : 0xa9dcfb;
   const pressedColor = disabled ? baseColor : 0x73b7e0;
   const strokeColor = disabled ? 0xb9b1a6 : 0x527892;
+  const shadowColor = disabled ? 0xc8c0b5 : 0x5e9dbf;
   const textColor = disabled ? "#867f74" : "#294458";
 
-  const shadow = scene.add.rectangle(0, 7, width, height, disabled ? 0xc8c0b5 : 0x6ea8ca, 0.45);
+  // Shadow rounded rect (no interaction)
+  const shadowGfx = scene.add.graphics();
+  const drawShadow = (oy = 6): void => {
+    shadowGfx.clear();
+    shadowGfx.fillStyle(shadowColor, 0.38);
+    shadowGfx.fillRoundedRect(-width / 2, -height / 2 + oy, width, height, radius);
+  };
+  drawShadow();
 
-  const background = scene.add
-    .rectangle(0, 0, width, height, baseColor)
-    .setStrokeStyle(3, strokeColor);
+  // Button body (rounded rect)
+  const bgGfx = scene.add.graphics();
+  const drawBg = (color: number): void => {
+    bgGfx.clear();
+    bgGfx.fillStyle(color, 1);
+    bgGfx.fillRoundedRect(-width / 2, -height / 2, width, height, radius);
+    bgGfx.lineStyle(2.5, strokeColor, disabled ? 0.45 : 1);
+    bgGfx.strokeRoundedRect(-width / 2, -height / 2, width, height, radius);
+  };
+  drawBg(baseColor);
+
+  // Soft shine on top-left corner
+  const shine = scene.add.ellipse(
+    -width * 0.18,
+    -height * 0.22,
+    width * 0.4,
+    height * 0.3,
+    0xffffff,
+    0.2,
+  );
 
   const text = scene.add
     .text(0, 0, label, {
       color: textColor,
       fontFamily: "Trebuchet MS, Verdana, sans-serif",
-      fontSize: "24px",
+      fontSize: `${Math.round(Math.min(24, height * 0.37))}px`,
       fontStyle: "bold",
       align: "center",
     })
     .setOrigin(0.5);
 
-  const shine = scene.add.ellipse(-width * 0.16, -height * 0.18, width * 0.38, height * 0.32, 0xffffff, 0.28);
+  // Invisible transparent Rectangle as the hit area on top
+  const hitArea = scene.add
+    .rectangle(0, 0, width, height, 0x000000, 0)
+    .setInteractive({ useHandCursor: !disabled });
 
-  const container = scene.add.container(x, y, [shadow, background, shine, text]) as BaseButtonControl;
+  const container = scene.add.container(x, y, [
+    shadowGfx,
+    bgGfx,
+    shine,
+    text,
+    hitArea,
+  ]) as BaseButtonControl;
   container.setSize(width, height);
   container.setData("labelText", text);
   container.setLabel = (nextLabel: string) => {
     text.setText(nextLabel);
   };
 
-  background.setInteractive({ useHandCursor: !disabled });
-  background
+  hitArea
     .on("pointerdown", () => {
-      if (disabled) {
-        return;
-      }
-
-      shadow.y = 3;
-      container.y = y + 2;
-      background.setFillStyle(pressedColor);
+      if (disabled) return;
+      drawShadow(2);
+      container.y = y + 3;
+      drawBg(pressedColor);
     })
     .on("pointerup", () => {
-      if (disabled) {
-        return;
-      }
-
-      shadow.y = 7;
+      if (disabled) return;
+      drawShadow(6);
       container.y = y;
-      background.setFillStyle(hoverColor);
+      drawBg(hoverColor);
       AudioManager.play(scene, "animal-food-tap");
       onClick();
     })
     .on("pointerover", () => {
-      background.setFillStyle(disabled ? baseColor : hoverColor);
+      if (!disabled) drawBg(hoverColor);
     })
     .on("pointerout", () => {
-      shadow.y = 7;
+      drawShadow(6);
       container.y = y;
-      background.setFillStyle(baseColor);
+      drawBg(baseColor);
     });
 
   return container;

@@ -26,7 +26,7 @@ export class AnimalFoodScene extends Phaser.Scene {
   private wrongAttemptCount = 0;
 
   // Layout is computed once per create() so all methods share the same values.
-  // At 390×844 (FIT base) these match the original hardcoded constants exactly.
+  // At 390x844 (FIT base) these match the original hardcoded constants exactly.
   private layout!: AnimalFoodLayout;
 
   private instructionText?: Phaser.GameObjects.Text;
@@ -95,7 +95,7 @@ export class AnimalFoodScene extends Phaser.Scene {
     });
 
     this.add
-      .text(width / 2, headerY - 4, "Animal Food", {
+      .text(width / 2, headerY - 4, LanguageManager.t(UI_STRINGS.animalFood.title), {
         color: "#5b4636",
         fontFamily: "Trebuchet MS, Verdana, sans-serif",
         fontSize: "30px",
@@ -172,8 +172,9 @@ export class AnimalFoodScene extends Phaser.Scene {
       return;
     }
 
-    this.instructionText.setText(level.instructionText);
-    this.progressText.setText(`Level ${this.currentLevelIndex + 1} / ${ANIMAL_FOOD_LEVELS.length}`);
+    this.instructionText.setText(LanguageManager.t(level.instructionText));
+    const levelLabel = LanguageManager.t(UI_STRINGS.animalFood.levelLabel);
+    this.progressText.setText(`${levelLabel} ${this.currentLevelIndex + 1} / ${ANIMAL_FOOD_LEVELS.length}`);
     this.feedbackBubble.hide();
 
     const { animalTargetY, foodRowY, cardGap } = this.layout;
@@ -232,7 +233,7 @@ export class AnimalFoodScene extends Phaser.Scene {
     this.completedCount += 1;
     foodCard.playCorrectAnimation();
     this.animalTarget.playHappyAnimation();
-    this.feedbackBubble.show(this.currentLevel.successText, "success");
+    this.feedbackBubble.show(LanguageManager.t(this.currentLevel.successText), "success");
     AudioManager.play(this, "animal-food-success");
     AudioManager.play(this, "animal-food-animal");
     this.playSuccessReward();
@@ -273,13 +274,13 @@ export class AnimalFoodScene extends Phaser.Scene {
   private finishGame(): void {
     this.scene.start(SCENE_KEYS.RESULT, {
       ageGroupId: this.selectedAgeGroupId,
-      title: "Great Job!",
-      message: "You helped all animals eat.",
+      title: LanguageManager.t(UI_STRINGS.animalFood.finishTitle),
+      message: LanguageManager.t(UI_STRINGS.animalFood.finishMessage),
     });
   }
 
   private renderPlayHint(): void {
-    const hint = this.add.text(this.scale.width / 2, this.layout.foodRowY + 78, "Drag a food card to the animal", {
+    const hint = this.add.text(this.scale.width / 2, this.layout.foodRowY + 78, LanguageManager.t(UI_STRINGS.animalFood.hint), {
       color: "#8d7a67",
       fontFamily: "Trebuchet MS, Verdana, sans-serif",
       fontSize: "16px",
@@ -314,7 +315,11 @@ export class AnimalFoodScene extends Phaser.Scene {
   }
 
   private getWrongFeedbackText(): string {
-    const messages = ["Try again", "Almost", "Let's try another one"];
-    return messages[this.wrongAttemptCount % messages.length] ?? "Try again";
+    const messages = [
+      LanguageManager.t(UI_STRINGS.animalFood.wrongFeedback1),
+      LanguageManager.t(UI_STRINGS.animalFood.wrongFeedback2),
+      LanguageManager.t(UI_STRINGS.animalFood.wrongFeedback3),
+    ];
+    return messages[this.wrongAttemptCount % messages.length] ?? LanguageManager.t(UI_STRINGS.animalFood.wrongFeedback1);
   }
 }

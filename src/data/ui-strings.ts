@@ -61,4 +61,14 @@ export const UI_STRINGS = {
       idn: "Permainan",
     },
   },
+  animalFood: {
+    title: { en: "Animal Food", idn: "Makanan Hewan" },
+    levelLabel: { en: "Level", idn: "Level" },
+    hint: { en: "Drag a food card to the animal", idn: "Seret kartu makanan ke hewan" },
+    finishTitle: { en: "Great Job!", idn: "Bagus Sekali!" },
+    finishMessage: { en: "You helped all animals eat.", idn: "Kamu sudah membantu semua hewan makan." },
+    wrongFeedback1: { en: "Try again", idn: "Coba lagi" },
+    wrongFeedback2: { en: "Almost!", idn: "Hampir!" },
+    wrongFeedback3: { en: "Let's try another one", idn: "Coba yang lain" },
+  },
 } satisfies Record<string, Record<string, LocalizedText>>;

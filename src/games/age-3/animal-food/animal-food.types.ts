@@ -1,5 +1,6 @@
 import type { AgeGroupId } from "../../../core/types/age-group.type";
 import type { GameModuleId } from "../../../core/types/game-module.type";
+import type { LocalizedText } from "../../../core/types/localized-text.type";
 
 export type AnimalFoodItemType = "animal" | "food";
 
@@ -15,8 +16,8 @@ export interface AnimalFoodLevel {
   animal: AnimalFoodItem;
   correctFoodId: string;
   foodOptions: AnimalFoodItem[];
-  instructionText: string;
-  successText: string;
+  instructionText: LocalizedText;
+  successText: LocalizedText;
 }
 
 export type AnimalFoodSceneData = {
